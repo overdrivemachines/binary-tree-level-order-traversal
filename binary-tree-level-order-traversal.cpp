@@ -19,13 +19,49 @@ vector<vector<int>> levelOrder(TreeNode *root);
 int main(int argc, char const *argv[]) {
   vector<int> input1 = {3, 9, 20, NULL, NULL, 15, 7};
   vector<int> input2 = {1};
+  vector<int> input3 = {1, 7, 9, 2, 6, NULL, 9, NULL, NULL, 5, 11, 5, NULL};
 
-  TreeNode *tree_root1 = createTree(input1);
+  // TreeNode *tree_root1 = createTree(input1);
   // TreeNode *tree_root2 = createTree(input2);
+  TreeNode *tree_root3 = createTree(input3);
+
+  levelOrder(tree_root3);
   return 0;
 }
 
 vector<vector<int>> levelOrder(TreeNode *root) {
+  queue<TreeNode *> nodes;
+  TreeNode *node;
+  vector<vector<int>> lo;
+  int count = 0, maxNodes = 1;
+
+  if (root == nullptr)
+    return {};
+
+  if ((root->left == nullptr) && (root->right == nullptr)) {
+    lo.push_back(vector<int>(1, root->val));
+    return lo;
+  }
+
+  nodes.push(root);
+  while (!nodes.empty()) {
+    // pop the front of the queue
+    // push the left and right of the popped node
+
+    node = nodes.front();
+    nodes.pop();
+    cout << "popped: " << node->val << endl;
+
+    if (node->left != nullptr) {
+      nodes.push(node->left);
+    }
+
+    if (node->right != nullptr) {
+      nodes.push(node->right);
+    }
+  }
+
+  return lo;
 }
 
 // create a tree given a vector of input elements
