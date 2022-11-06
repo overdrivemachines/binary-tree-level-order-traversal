@@ -16,17 +16,22 @@ struct TreeNode {
 
 TreeNode *createTree(vector<int> input);
 vector<vector<int>> levelOrder(TreeNode *root);
+void printVectorOfVectors(vector<vector<int>> v);
 
 int main(int argc, char const *argv[]) {
+  vector<vector<int>> output;
   vector<int> input1 = {3, 9, 20, NULL, NULL, 15, 7};
   vector<int> input2 = {1};
   vector<int> input3 = {1, 7, 9, 2, 6, NULL, 9, NULL, NULL, 5, 11, 5, NULL};
+  vector<int> input4 = {1, 2, 3, 4, 5};
 
-  TreeNode *tree_root1 = createTree(input1);
+  // TreeNode *tree_root1 = createTree(input1);
   // TreeNode *tree_root2 = createTree(input2);
   // TreeNode *tree_root3 = createTree(input3);
+  TreeNode *tree_root4 = createTree(input4);
 
-  levelOrder(tree_root1);
+  output = levelOrder(tree_root4);
+  printVectorOfVectors(output);
   return 0;
 }
 
@@ -34,6 +39,7 @@ vector<vector<int>> levelOrder(TreeNode *root) {
   queue<TreeNode *> nodes;
   TreeNode *node;
   vector<vector<int>> lo;
+  vector<int> inner;
   int count = 0, maxNodes = 1, loopCounter = 0, height = 0;
   int maxNodesNext = 1;
 
@@ -51,11 +57,14 @@ vector<vector<int>> levelOrder(TreeNode *root) {
     // push the left and right of the popped node
 
     node = nodes.front();
+    inner.push_back(node->val);
     nodes.pop();
-    cout << "popped: " << node->val << endl;
+    // cout << "popped: " << node->val << endl;
     maxNodesNext--;
     if (maxNodesNext == 0) {
-      cout << "next height\n";
+      // cout << "next height\n";
+      lo.push_back(inner);
+      inner = vector<int>();
     }
 
     if (node->left != nullptr) {
@@ -128,4 +137,13 @@ TreeNode *createTree(vector<int> input) {
   }
 
   return root;
+}
+
+void printVectorOfVectors(vector<vector<int>> v) {
+  for (auto items : v) {
+    for (auto item : items) {
+      cout << item << " ";
+    }
+    cout << endl;
+  }
 }
