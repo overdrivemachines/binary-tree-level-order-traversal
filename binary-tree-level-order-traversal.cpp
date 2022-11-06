@@ -40,8 +40,8 @@ vector<vector<int>> levelOrder(TreeNode *root) {
   TreeNode *node;
   vector<vector<int>> lo;
   vector<int> inner;
-  int count = 0, maxNodes = 1, loopCounter = 0, height = 0;
-  int maxNodesNext = 1;
+  int maxNodes = 1;
+  int maxNodesNext = 0;
 
   if (root == nullptr)
     return {};
@@ -60,12 +60,7 @@ vector<vector<int>> levelOrder(TreeNode *root) {
     inner.push_back(node->val);
     nodes.pop();
     // cout << "popped: " << node->val << endl;
-    maxNodesNext--;
-    if (maxNodesNext == 0) {
-      // cout << "next height\n";
-      lo.push_back(inner);
-      inner = vector<int>();
-    }
+    maxNodes--;
 
     if (node->left != nullptr) {
       nodes.push(node->left);
@@ -75,6 +70,14 @@ vector<vector<int>> levelOrder(TreeNode *root) {
     if (node->right != nullptr) {
       nodes.push(node->right);
       maxNodesNext++;
+    }
+
+    if (maxNodes == 0) {
+      // cout << "next height\n";
+      lo.push_back(inner);
+      inner = vector<int>();
+      maxNodes = maxNodesNext;
+      maxNodesNext = 0;
     }
   }
 
