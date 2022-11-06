@@ -1,3 +1,4 @@
+#include <cmath>
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -21,11 +22,11 @@ int main(int argc, char const *argv[]) {
   vector<int> input2 = {1};
   vector<int> input3 = {1, 7, 9, 2, 6, NULL, 9, NULL, NULL, 5, 11, 5, NULL};
 
-  // TreeNode *tree_root1 = createTree(input1);
+  TreeNode *tree_root1 = createTree(input1);
   // TreeNode *tree_root2 = createTree(input2);
-  TreeNode *tree_root3 = createTree(input3);
+  // TreeNode *tree_root3 = createTree(input3);
 
-  levelOrder(tree_root3);
+  levelOrder(tree_root1);
   return 0;
 }
 
@@ -33,7 +34,7 @@ vector<vector<int>> levelOrder(TreeNode *root) {
   queue<TreeNode *> nodes;
   TreeNode *node;
   vector<vector<int>> lo;
-  int count = 0, maxNodes = 1;
+  int count = 0, maxNodes = 1, loopCounter = 0, height = 0;
 
   if (root == nullptr)
     return {};
@@ -48,17 +49,27 @@ vector<vector<int>> levelOrder(TreeNode *root) {
     // pop the front of the queue
     // push the left and right of the popped node
 
+    maxNodes = pow(2, height);
+
     node = nodes.front();
     nodes.pop();
-    cout << "popped: " << node->val << endl;
+
+    count++;
+    cout << "popped: " << node->val << " count: " << count << endl;
 
     if (node->left != nullptr) {
       nodes.push(node->left);
+    } else {
+      count++;
     }
 
     if (node->right != nullptr) {
       nodes.push(node->right);
+    } else {
+      count++;
     }
+
+    loopCounter++;
   }
 
   return lo;
@@ -85,20 +96,20 @@ TreeNode *createTree(vector<int> input) {
   bool isLeftFilled = false;
 
   for (int i = 1; i < input.size(); i++) {
-    cout << input[i] << ": ";
+    // cout << input[i] << ": ";
     if (input[i] != NULL) {
       node = new TreeNode(input[i]);
       // add node to queue
       nodes.push(node);
       if (!isLeftFilled) {
         parent->left = node;
-        cout << "adding " << node->val << " to left of " << parent->val << endl;
+        // cout << "adding " << node->val << " to left of " << parent->val << endl;
         isLeftFilled = true;
       } else {
         parent->right = node;
-        cout << "adding " << node->val << " to right of " << parent->val << endl;
+        // cout << "adding " << node->val << " to right of " << parent->val << endl;
         parent = nodes.front();
-        cout << "new parent: " << parent->val << endl;
+        // cout << "new parent: " << parent->val << endl;
         nodes.pop();
         isLeftFilled = false;
       }
@@ -107,12 +118,12 @@ TreeNode *createTree(vector<int> input) {
       if (!isLeftFilled) {
         parent->left = nullptr;
         isLeftFilled = true;
-        cout << "adding null to left of " << parent->val << endl;
+        // cout << "adding null to left of " << parent->val << endl;
       } else {
         parent->right = nullptr;
-        cout << "adding null to right of " << parent->val << endl;
+        // cout << "adding null to right of " << parent->val << endl;
         parent = nodes.front();
-        cout << "new parent: " << parent->val << endl;
+        // cout << "new parent: " << parent->val << endl;
         nodes.pop();
         isLeftFilled = false;
       }
